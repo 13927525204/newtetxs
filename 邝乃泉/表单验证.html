@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>表单验证</title>
+    <style>
+        form{width: 800px;overflow: hidden;margin: 50px auto;}
+        div{line-height: 40px;}
+        input{
+            width: 250px;
+            padding-left: 10px;
+            height: 30px;
+            line-height: 30px;color: #333;
+            font-size: 14px;
+            border: 1px solid #666;outline: none;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+        span{display: inline-block;}
+        .submit{width: 120px;background: #666;color: #fff;margin-left: 70px;cursor: pointer;}
+        .tips{color:red;margin-left: 5px;}
+    </style>
+</head>
+<body>
+    <form action="" method="post" class="form" onsubmit="return check(this)">
+        <div><span>姓名：</span><input type="text" name="name" id="name" placeholder="姓名" /><span class="tips ntip"></span><br /></div>
+        <div><span>电话：</span><input type="text" name="phone" id="phone" placeholder="电话" /><span class="tips ctip"></span><br /></div>
+        <div><span>密码：</span><input type="password" name="pwd1" id="pwd1" placeholder="输入密码" /><span class="tips ptip"></span><br /></div>						
+        <div><span>确认：</span><input type="password" name="pwd2" id="pwd2" placeholder="确认密码" /><span class="tips ptips"></span><br />	</div>					
+        <div><span>邮箱：</span><input type="text" name="email" id="email" placeholder="邮箱" /><span class="tips etip"></span><br /></div>
+        <input type="submit" value="提交" class="submit" />
+    </form>
+    <script>
+        var form = document.getElementsByTagName('form')[0];
+        form.oninput = function check(){
+            //姓名
+            var name = document.getElementById("name");
+            if(name.value == ''){
+                document.getElementsByClassName('ntip')[0].innerHTML = '姓名不能为空';
+                return false;
+            }else{
+                document.getElementsByClassName('ntip')[0].innerHTML = ''
+                var vname = (/^[a-zA-Z\u4e00-\u9fa5]{2,10}$/);
+                if(!vname.test(name.value)){
+                    document.getElementsByClassName('ntip')[0].innerHTML = '姓名2-10个字，只能是中文或英文';
+                    return false;    
+                }
+            }
+            //电话
+            var phone = document.getElementById('phone');
+            if(phone.value == ''){
+                document.getElementsByClassName('ctip')[0].innerHTML = '电话号码不能为空';
+                return false;
+            }else{
+                document.getElementsByClassName('ctip')[0].innerHTML = '';
+                var rphone = /^13[0-9]{1}[0-9]{8}$|15[0-9]{1}[0-9]{8}$|18[0-9]{1}[0-9]{8}|17[0-9]{1}[0-9]{8}$|14[0-9]{1}[0-9]{8}/;
+                var rtel = /^([0-9]{3,4}-)?[0-9]{7,8}$/;
+                if(!rphone.test(phone.value) && !rtel.test(phone.value)){
+                    document.getElementsByClassName('ctip')[0].innerHTML = '手机或电话号码格式不正确';
+                    return false;
+                }
+            }
+            //密码
+            var pwd1 = document.getElementById('pwd1');
+            if(pwd1.value==''){
+               document.getElementsByClassName('ptip')[0].innerHTML = '密码不能为空';
+                return false;
+            }else{
+                document.getElementsByClassName('ptip')[0].innerHTML = '';
+                var vpwd = /^[A-Za-z0-9]+$/;
+                if(!vpwd.test(pwd1.value)){
+                    document.getElementsByClassName('ptip')[0].innerHTML = '密码错误，密码由数字和字母组成'
+                    return false;
+                }else{
+                    if(pwd1.value.length<6){
+                        document.getElementsByClassName('ptip')[0].innerHTML = '密码不能少于6位'
+                        return false;
+                    }
+                }
+		    }
+            //验证密码
+            var pwd2 = document.getElementById('pwd2');
+            if(pwd2.value == ''){
+                document.getElementsByClassName('ptips')[0].innerHTML = '请输入确认密码';
+                return false;
+            }else{
+                if(!(pwd2.value==pwd1.value)){
+                    document.getElementsByClassName('ptips')[0].innerHTML = '确认密码与第一次输入不同'
+                    return false;
+                }else{
+                    document.getElementsByClassName('ptips')[0].innerHTML = '';
+                }
+            }
+            
+            //邮箱
+            var email = document.getElementById('email');
+            if(email.value==''){
+                document.getElementsByClassName('etip')[0].innerHTML = '邮箱不能为空';
+                return false;
+            }else{
+                document.getElementsByClassName('etip')[0].innerHTML = '';
+                var vemail = /^[0-9a-zA-Z]+(?:[\_\.\-][a-z0-9\-]+)*@[a-zA-Z0-9]+(?:[-.][a-zA-Z0-9]+)*\.[a-zA-Z]+$/i;
+                if(!vemail.test(email.value)){
+                    document.getElementsByClassName('etip')[0].innerHTML = '邮箱格式错误';
+                    return false;
+                }
+            }
+        }
+    </script>
+</body>
+</html>
